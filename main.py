@@ -8,6 +8,11 @@ def get_redis_info(project_id):
         request = redis_v1.ListInstancesRequest(parent=f"projects/{project_id}/locations/-")
         instances = client.list_instances(request=request)
 
+        # Check if there are no Redis instances
+        if not instances.instances: 
+            print(f"No Redis instances found for project {project_id}. Skipping...")
+            return []
+
         redis_info = []
         for instance in instances.instances:
             redis_info.append({
